@@ -109,20 +109,25 @@ const icons =
 	}
 ];
 
+const colors = ["teal", "magenta", "orange"]
 let row = document.querySelector("#icon-row");
 console.log(row);
 printToPage(icons, row)
+console.log(getPropertyValue(icons, "type"))
+const colorizedItems = colorItems(icons, colors)
+printToPage(colorizedItems, row)
 
-// Creo una funzione che stampi su html.
+
+// Creating a function that prints content on HTML.
 function printToPage(array, container){
     let htmlContent = "";
 
     array.forEach(element => {
-        const {name, prefix, type, family} = element;
+        const {name, prefix, type, family, color} = element;
 
         htmlContent += 
-        `<div class="col-2"> 
-            <i class="${family} ${prefix}${name} "></i>
+        `<div class="col-3"> 
+            <i class="${family} ${prefix}${name}" style="color: ${color}"></i>
             <h4 class="my_title">${name} (${type})</h4>
         </div>
         `
@@ -130,5 +135,35 @@ function printToPage(array, container){
 
     container.innerHTML = htmlContent;
 }
+
+//Creating a function that makes an array with the selected property in the element (without repetitions).
+function getPropertyValue(array, property){
+    const types = []
+
+    array.forEach ((element, index) => {
+        if(!types.includes(element[property]))types.push(element[property]);
+    })
+
+    return types;
+}
+
+//creating a function that colors items according to the type
+function colorItems (array, colors){
+
+    const types = getPropertyValue(array, "type");
+    console.log = types;
+
+    const colorItems = array.map((element) => {
+
+        const indexOfType = types.indexOf(element.type);
+        if( indexOfType !== -1 ){
+            element.color = colors[indexOfType];
+        }
+        return element
+    })
+    return colorItems;
+}
+
+
 
 
